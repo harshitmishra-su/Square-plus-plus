@@ -1,4 +1,4 @@
-#Square++  
+# Square++  
 A simple game built using raylib in c++.
 
 To play download the release for the appropriate os.  
