@@ -6,7 +6,7 @@
 const float win_width = 800;
 const float win_height = 800;
 
-bool game_over = false;
+bool game_over = false; //Breaks out of game loop if this is true.
 void gameover(){
     std::this_thread::sleep_for(std::chrono::seconds(1));
     
@@ -20,6 +20,7 @@ void gameover(){
 }
 
 class obj{
+    //main square at the centre.
     public:
         float forcex = 0, forcey = 0;
         float velx = 0, vely = 0;
@@ -36,6 +37,8 @@ class obj{
             DrawRectangle(posx, posy, width, height, RED);
         }
         void move(){
+            // moves the square on keyboard input.
+            
             forcex = -600*(posx+width/2 - win_width/2);
             forcey = -600*(posy+height/2 - win_height/2);
             velx = forcex*GetFrameTime();
@@ -57,6 +60,10 @@ class obj{
             }
         }
         bool chk_outof_axs(){
+            // checks if the square is not on any axis(x or y).
+            // the main square can't collide with the moving square if this is the case.
+            // one can stay in this region for <out_time> seconds.
+
             float diffX = fabs(posx + width/2.0f - win_width/2.0f);
             float diffY = fabs(posy + height/2.0f - win_height/2.0f);
             if(diffX >= 5.0f && diffY >= 5.0f){
@@ -76,6 +83,7 @@ class obj{
 };
 
 class obsy{
+    // Squares moving in the y-axis.
     public:
     float width = 30, height = 30;
     float ps_x = win_width/2 - width/2,
@@ -93,6 +101,7 @@ class obsy{
 float obsy::speed = 100;
 
 class obsx{
+    // Squares moving in x-axis.
     public:
     float width = 30, height = 30;
     float ps_x = win_width + GetRandomValue(1000, 5000),
@@ -122,6 +131,7 @@ void checkcollision(obj& o, obsx** ox, obsy** oy, int n){
 }
 
 void showscore(){
+    // Shows the score and increases the difficulty with the score.
     int score;
     int weight = 1;
     score = weight*GetTime();
@@ -139,25 +149,28 @@ int main(){
 
     int num = 50;
     int gap = 500;
-    obsx* ox[num];
-    obsy* oy[num];
+    obsx* ox[num];  // Arrays of pointers to be pointed to square objects in 
+    obsy* oy[num];  // x and y axes on the heap below.
     
     for(int i=0; i<num; ++i){
         ox[i] = new obsx;
         oy[i] = new obsy;
     }
                
-    obj rect;
+    obj rect; // Main square at the centre.
     while(!WindowShouldClose()){
         BeginDrawing();
                 
         ClearBackground(BLACK);
-        //DrawLine(0, win_height/2, win_width, win_height/2, BLACK);
-        //DrawLine(win_width/2, 0, win_width/2, win_height, BLACK);
+
         if(GetTime() < 5){
             DrawText("VIM Keys Can Be Used To Move", 10, win_height-20, 15, LIGHTGRAY);
         }
         for(int i=0; i<num; ++i){
+            // Checks if the squares in the x and y axes overlap or if they are
+            // too close to each other.
+            // Separates them if they are.
+            
             for(int j=i+1; j<num; ++j){
                 if(j == i)
                     continue;
@@ -206,6 +219,11 @@ int main(){
         }
             
         EndDrawing();
+    }
+
+    for(int i=0; i<num; ++i){
+        delete ox[i];
+        delete oy[i];
     }
 
     CloseWindow();
