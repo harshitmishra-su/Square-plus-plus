@@ -159,7 +159,9 @@ int main(){
         ox[i] = new obsx;
         oy[i] = new obsy;
     }
-               
+
+    bool paused = false;
+        
     obj rect; // Main square at the centre.
     while(!WindowShouldClose()){
         BeginDrawing();
@@ -168,6 +170,7 @@ int main(){
 
         if(GetTime() < 5){
             DrawText("VIM Keys Can Be Used To Move", 10, win_height-20, 15, LIGHTGRAY);
+            DrawText("Press SpaceBar to pause", win_width-200, win_height-20, 15, LIGHTGRAY);
         }
         for(int i=0; i<num; ++i){
             // Checks if the squares in the x and y axes overlap or if they are
@@ -208,10 +211,20 @@ int main(){
                 oy[i] = new obsy;
             }
         }
-        showscore();
         rect.draw();
         rect.move();
 
+        if(IsKeyDown(KEY_SPACE)){
+            paused = !paused;
+            std::this_thread::sleep_for(std::chrono::milliseconds(150));
+        };
+        if(paused){
+            DrawText("PAUSED", win_width/2-200, win_height/2-50, 100, PURPLE);
+            EndDrawing();
+            continue; 
+        }
+
+        showscore();         
         std::thread ckcoll(checkcollision, std::ref(rect), (obsx**)ox, (obsy**)oy, num);
         std::thread out_of_bound(&obj::chk_outof_axs, &rect, GetFrameTime());
         // checking the collision and if the square is out of axes
