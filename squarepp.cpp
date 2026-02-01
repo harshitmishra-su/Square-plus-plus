@@ -133,15 +133,17 @@ void checkcollision(obj& o, obsx** ox, obsy** oy, int n){
     }
 }
 
+int score = 0;
+int last_score = 0;
+float score_accu = 0;
 void showscore(){
     // Shows the score and increases the difficulty with the score.
-    int score;
-    int weight = 1;
-    score = weight*GetTime();
-    if(score%10 == 0){
-        weight += 1;
-        obsx::speed += 0.5;
-        obsy::speed += 0.5;
+    score_accu += GetFrameTime();
+    score = (int)score_accu;
+    if(score > last_score && score%10 == 0){
+        obsx::speed += 10.0f;
+        obsy::speed += 10.0f;
+        last_score = score;
     }
     DrawText(TextFormat("Score: %d", score), 20, 20, 30, ORANGE);
 }
