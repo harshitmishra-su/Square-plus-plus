@@ -135,16 +135,14 @@ void checkcollision(obj& o, obsx** ox, obsy** oy, int n){
 
 int score = 0;
 int last_score = 0;
-int weight = 1;
 float score_accu = 0;
 void showscore(){
     // Shows the score and increases the difficulty with the score.
-    score_accu += (float)weight * GetFrameTime();
+    score_accu += GetFrameTime();
     score = (int)score_accu;
     if(score > last_score){
-        weight += 1;
-        obsx::speed += 1.0f;
-        obsy::speed += 1.0f;
+        obsx::speed += 2.0f;
+        obsy::speed += 2.0f;
         last_score = score;
     }
     DrawText(TextFormat("Score: %d", score), 20, 20, 30, ORANGE);
