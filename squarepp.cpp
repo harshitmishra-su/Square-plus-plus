@@ -147,7 +147,7 @@ void showscore(){
 }
 
 int main(){
-    InitWindow(win_width, win_height, "game");
+    InitWindow(win_width, win_height, "Square++");
     SetTargetFPS(60);
 
     int num = 50;
@@ -224,7 +224,8 @@ int main(){
 
         if(game_over){
             gameover();
-            EndDrawing();
+            ckcoll.join();
+            out_of_bound.join();
             break;
         }
 
