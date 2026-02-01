@@ -2,11 +2,13 @@
 #include<cmath>
 #include<chrono>
 #include<thread>
+#include<functional>
 
 const float win_width = 800;
-const float win_height = 800;
+const float win_height = 600;
 
-bool game_over = false; //Breaks out of game loop if this is true.
+bool game_over = false;    //Breaks out of game loop if this is true.
+bool out_of_axes = false;
 void gameover(){
     std::this_thread::sleep_for(std::chrono::seconds(1));
     
@@ -16,7 +18,6 @@ void gameover(){
         DrawText("GAME OVER", win_width/2 - 300, win_height/2 - 50, 100, RED);
         EndDrawing();
     }
-    game_over = true;
 }
 
 class obj{
@@ -59,7 +60,7 @@ class obj{
                 posx -= speed*GetFrameTime();
             }
         }
-        bool chk_outof_axs(){
+        void chk_outof_axs(float frametime){
             // checks if the square is not on any axis(x or y).
             // the main square can't collide with the moving square if this is the case.
             // one can stay in this region for <out_time> seconds.
@@ -67,18 +68,20 @@ class obj{
             float diffX = fabs(posx + width/2.0f - win_width/2.0f);
             float diffY = fabs(posy + height/2.0f - win_height/2.0f);
             if(diffX >= 5.0f && diffY >= 5.0f){
+                out_of_axes = true; 
                 if(timer <= out_time){
-                    timer += GetFrameTime();
-                    float elapsed = timer / out_time;
-                    BeginDrawing();
-                    DrawRectangle(0, win_height-20, (int)(elapsed*win_width), 20, RED);
-                    EndDrawing();
-                    return true; 
+                    timer += frametime;
+                    // the time since the rectangle is
+                    // out of the x and y axes.
+                    elapsed = timer / out_time;
+                    //fraction of time spent outside both axes out of
+                    // which can be spent before the game is over.
                 }else{
-                    gameover();    
+                    game_over = true;    
                 }
+            }else{
+                out_of_axes = false;
             }
-            return false;
         }
 };
 
@@ -125,7 +128,7 @@ void checkcollision(obj& o, obsx** ox, obsy** oy, int n){
         Rectangle y = {oy[i]->ps_x, oy[i]->ps_y, oy[i]->width, oy[i]->height};
 
         if(CheckCollisionRecs(a, x) || CheckCollisionRecs(a, y)){
-            gameover();
+            game_over = true;
         }
     }
 }
@@ -209,15 +212,24 @@ int main(){
         rect.draw();
         rect.move();
 
-        checkcollision(rect, ox, oy, num);
-        if(!rect.chk_outof_axs()){
-            rect.timer = 0;
+        std::thread ckcoll(checkcollision, std::ref(rect), (obsx**)ox, (obsy**)oy, num);
+        std::thread out_of_bound(&obj::chk_outof_axs, &rect, GetFrameTime());
+        // checking the collision and if the square is out of axes
+        // happens on different threads for smoothness.
+        if(out_of_axes){
+            DrawRectangle(0, win_height-20, (int)(rect.elapsed*win_width), 20, RED);
+        }else{
+            rect.timer = 0;            
         }
-         if(game_over){
+
+        if(game_over){
+            gameover();
             EndDrawing();
             break;
         }
-            
+
+        ckcoll.join();
+        out_of_bound.join();    
         EndDrawing();
     }
 
