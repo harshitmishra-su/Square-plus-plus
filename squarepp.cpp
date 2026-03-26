@@ -4,8 +4,8 @@
 #include<thread>
 #include<functional>
 
-const float win_width = 800;
-const float win_height = 600;
+float win_width = 800;
+float win_height = 600;
 
 bool game_over = false;    //Breaks out of game loop if this is true.
 bool out_of_axes = false;
@@ -89,12 +89,12 @@ class obsy{
     // Squares moving in the y-axis.
     public:
     float width = 30, height = 30;
-    float ps_x = win_width/2 - width/2,
-          ps_y = win_height + GetRandomValue(0, 100);
+    float ps_x, ps_y = win_height + GetRandomValue(0, 100);
     static float speed;    
     Color colour = BLUE;
 
     void draw(){
+        ps_x = win_width/2 - width/2,
         DrawRectangle(ps_x, ps_y, width, height, colour);
     }
     void move(){
@@ -107,12 +107,12 @@ class obsx{
     // Squares moving in x-axis.
     public:
     float width = 30, height = 30;
-    float ps_x = win_width + GetRandomValue(1000, 5000),
-          ps_y = win_height/2 - height/2;
+    float ps_x = win_width + GetRandomValue(1000, 5000), ps_y;
     static float speed;    
     Color colour = GREEN;
 
     void draw(){
+        ps_y = win_height/2 - height/2;
         DrawRectangle(ps_x, ps_y, width, height, colour);
     }
     void move(){
@@ -149,6 +149,7 @@ void showscore(){
 }
 
 int main(){
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);  //Makes the window resizable. 
     InitWindow(win_width, win_height, "Square++");
     SetTargetFPS(60);
 
@@ -168,6 +169,9 @@ int main(){
     while(!WindowShouldClose()){
         BeginDrawing();
                 
+        win_width = GetScreenWidth();   //Takes care of position adjustments of
+        win_height = GetScreenHeight(); //objects in the window when it gets resized.
+
         ClearBackground(BLACK);
 
         if(GetTime() < 5){
