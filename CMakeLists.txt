@@ -14,8 +14,10 @@ endif()
 project(squarepp)
 
 include(FetchContent)
+
 set(RAYLIB_VERSION 5.5)
 set(BUILD_SHARED_LIB OFF CACHE BOOL "" FORCE)
+
 FetchContent_Declare(
     raylib
     URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_VERSION}.tar.gz
