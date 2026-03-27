@@ -29,9 +29,9 @@ Build it using cmake by defining the TARGET variable.
 cmake -B build -D TARGET=<target_triplet_of_the_platform_you_want_to_build_for>  
 cmake --build build
 ```
-*TARGET TRIPLET*
-For Windows - x86_64-windows-gnu
-For Linux - .86_64-linux-musl
+*TARGET TRIPLET*  
+For Windows - x86_64-windows-gnu  
+For Linux - .86_64-linux-musl  
 
 Arrow keys or vim keys(H J K L) can be used to play.  
 Press spacebar to pause.  
