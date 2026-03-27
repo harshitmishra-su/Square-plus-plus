@@ -18,7 +18,7 @@ To play download the release for the appropriate os.
 
 ```bash
 cmake -B build  
-cmake -build build
+cmake --build build
 ```
   
 ## If building for a different platform
