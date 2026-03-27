@@ -8,7 +8,7 @@ To play download the release for the appropriate os.
 
 # To build the project
 
-*YOU NEED TO HAVE CMAKE AND MAKE INSTALLED AND ALSO ZIG INSTALLED IF CROSS-COMPILING FOR DIFFERENT PLATFORMS.*  
+*YOU NEED TO HAVE CMAKE, MAKE AND A C++ COMPILER INSTALLED AND ALSO ZIG INSTALLED IF CROSS-COMPILING FOR DIFFERENT PLATFORMS.*  
 
 ## For the current OS  
 
@@ -25,19 +25,13 @@ cmake --build build
 
 Build it using cmake by defining the TARGET variable.  
 
-### For Windows
-
 ```bash
-cmake -B build -D TARGET=x86_64_windows-gnu
+cmake -B build -D TARGET=<target_triplet_of_the_platform_you_want_to_build_for>  
 cmake --build build
 ```
-
-### For Linux
-
-```bash
-cmake -B build -D TARGET=x86_64-linux-musl  
-cmake --build build  
-```
+*TARGET TRIPLET*
+For Windows - x86_64-windows-gnu
+For Linux - .86_64-linux-musl
 
 Arrow keys or vim keys(H J K L) can be used to play.  
 Press spacebar to pause.  
