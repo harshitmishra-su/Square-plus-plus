@@ -15,26 +15,32 @@ To play download the release for the appropriate os.
   
 3. Build it using cmake.  
    If you're building for the current os you are in  
-   '''bash
-    cmake -B build  
-    cmake -build build'''
+```
+bash
+cmake -B build  
+cmake -build build
+```
       
 ## If building for a different platform
 
-3. Build it using cmake by defining the TARGET variable.  
+Build it using cmake by defining the TARGET variable.  
 
 ### For Windows
 
-   '''bash
-   cmake -B build -D TARGET=x86_64_windows-gnu
-   cmake --build build'''
+```
+bash
+cmake -B build -D TARGET=x86_64_windows-gnu
+cmake --build build
+```
 
 ### For Linux
 
-   '''bash
-   cmake -B build -D TARGET=x86_64-linux-musl  
-   cmake --build build '''  
+```
+bash
+cmake -B build -D TARGET=x86_64-linux-musl  
+cmake --build build  
+```  
 
-Arrow keys or vim keys(H J K L) can be used to play.
-Press spacebar to pause.
-Both arrow keys can be used at the same time.
+Arrow keys or vim keys(H J K L) can be used to play.  
+Press spacebar to pause.  
+Both arrow keys can be used at the same time.  
