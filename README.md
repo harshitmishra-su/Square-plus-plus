@@ -8,6 +8,7 @@ To play download the release for the appropriate os.
 
 # To build the project
 *YOU NEED TO HAVE XMAKE AND A C++ COMPILER INSTALLED*
+![Here](https://xmake.io/guide/quick-start.html) are the instructions to install xmake on your system.
 
 ```bash
 xmake #run in the project directory
