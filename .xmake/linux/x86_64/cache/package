@@ -1,0 +1,75 @@
+{
+    raylib = {
+        license = "zlib",
+        __enabled = true,
+        static = true,
+        installdir = "/home/harshitmishra/.xmake/packages/r/raylib/6.0/08b8fd6b53744ed0ab7f41194d7546ad",
+        libfiles = {
+            "/home/harshitmishra/.xmake/packages/r/raylib/6.0/08b8fd6b53744ed0ab7f41194d7546ad/lib/libraylib.a",
+            "/usr/lib64/libXrandr.so",
+            "/usr/lib64/libXinerama.so",
+            "/usr/lib64/libXcursor.so",
+            "/usr/lib64/libXrender.so",
+            "/usr/lib64/libX11.so",
+            "/usr/lib64/libXi.so",
+            "/usr/lib64/libXfixes.so",
+            "/usr/lib64/libXext.so",
+            "/usr/lib64/libxcb.so",
+            "/usr/lib64/libXau.so",
+            "/usr/lib64/libXdmcp.so"
+        },
+        sysincludedirs = {
+            "/home/harshitmishra/.xmake/packages/r/raylib/6.0/08b8fd6b53744ed0ab7f41194d7546ad/include",
+            "/home/harshitmishra/.xmake/packages/x/xorgproto/2023.2/22469615461f49aebbfa4e10af6edb62/include"
+        },
+        version = "6.0",
+        links = {
+            "raylib",
+            "Xrandr",
+            "Xinerama",
+            "Xcursor",
+            "Xrender",
+            "X11",
+            "Xi",
+            "Xfixes",
+            "Xext",
+            "xcb",
+            "Xau",
+            "Xdmcp",
+            "OpenGL"
+        },
+        envs = {
+            SSL_CERT_FILE = {
+                "/home/harshitmishra/.xmake/packages/c/ca-certificates/20250131/e9ba281ae183402a80dc072d4d571c20/cacert.pem"
+            },
+            PATH = {
+                "/home/harshitmishra/.xmake/packages/n/ninja/v1.13.2/0a9451759a4647b5923438b464085dd6/bin",
+                "/home/harshitmishra/.xmake/packages/c/cmake/4.2.3/e71a3c9d8ba0426bac589c2c548be58b/bin",
+                "/home/harshitmishra/.xmake/packages/p/pkg-config/0.29.2/a0aba256d7674c1bbee15f0ee1534e92/bin",
+                "/home/harshitmishra/.xmake/packages/p/pkg-config/0.29.2/a0aba256d7674c1bbee15f0ee1534e92/bin",
+                "/home/harshitmishra/.xmake/packages/p/python/3.14.3/5b29e409d339499392171d61390dfc38/bin",
+                "/home/harshitmishra/.xmake/packages/p/python/3.14.3/5b29e409d339499392171d61390dfc38/bin",
+                "/home/harshitmishra/.xmake/packages/p/python/3.14.3/5b29e409d339499392171d61390dfc38/Scripts"
+            },
+            LD_LIBRARY_PATH = {
+                "/home/harshitmishra/.xmake/packages/l/libxau/1.0.12/f28a3a7249e64bfeafc481e65ce195a9/lib",
+                "/home/harshitmishra/.xmake/packages/l/libxdmcp/1.1.5/fac034d258af4aada2c864884ac5f660/lib",
+                "/home/harshitmishra/.xmake/packages/l/libxcb/1.17.0/8212376093344ea7a7a61a715b1bcdd5/lib",
+                "/home/harshitmishra/.xmake/packages/l/libx11/1.8.13/fa5de29573fd426583b062bb45cc2a89/lib"
+            },
+            PYTHONPATH = {
+                "/home/harshitmishra/.xmake/packages/p/python/3.14.3/5b29e409d339499392171d61390dfc38/lib/python3.14/site-packages"
+            },
+            SSL_CERT_DIR = {
+                "/home/harshitmishra/.xmake/packages/c/ca-certificates/20250131/e9ba281ae183402a80dc072d4d571c20"
+            }
+        },
+        __requirestr = "raylib",
+        syslinks = {
+            "pthread",
+            "dl",
+            "m"
+        },
+        linkdirs = "/home/harshitmishra/.xmake/packages/r/raylib/6.0/08b8fd6b53744ed0ab7f41194d7546ad/lib"
+    }
+}
