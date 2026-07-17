@@ -1,133 +1,129 @@
-#include<raylib.h>
-#include<cmath>
-#include<chrono>
-#include<thread>
-#include<functional>
+#include <raylib.h>
+
+#include <chrono>
+#include <cmath>
+#include <functional>
+#include <thread>
 
 float win_width = 800;
 float win_height = 600;
 
-bool game_over = false;    //Breaks out of game loop if this is true.
+bool game_over = false;  // Breaks out of game loop if this is true.
 bool out_of_axes = false;
-void gameover(){
+void gameover() {
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    
-    while(!WindowShouldClose()){   
+
+    while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawText("GAME OVER", win_width/2 - 300, win_height/2 - 50, 100, RED);
+        DrawText("GAME OVER", win_width / 2 - 300, win_height / 2 - 50, 100,
+                 RED);
         EndDrawing();
     }
 }
 
-class obj{
-    //main square at the centre.
-    public:
-        float forcex = 0, forcey = 0;
-        float velx = 0, vely = 0;
-        float speed = 700;
-        float width = 50, height = 50;
-        float posx = win_width/2 - width/2;
-        float posy = win_height/2 - height/2;
-        
-        float timer = 0;
-        float out_time = 2;
-        float elapsed = timer / out_time;
-        
-        void draw(){
-            DrawRectangle(posx, posy, width, height, RED);
-        }
-        void move(){
-            // moves the square on keyboard input.
-            
-            forcex = -600*(posx+width/2 - win_width/2);
-            forcey = -600*(posy+height/2 - win_height/2);
-            velx = forcex*GetFrameTime();
-            vely = forcey*GetFrameTime();
-            posx += velx*GetFrameTime();
-            posy += vely*GetFrameTime();
-            
-            if(IsKeyDown(KEY_UP) || IsKeyDown(KEY_K)){
-                posy -= speed*GetFrameTime();    
-            }
-            if(IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_J)){
-                posy += speed*GetFrameTime();
-            }
-            if(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_L)){
-                posx += speed*GetFrameTime();
-            }
-            if(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_H)){
-                posx -= speed*GetFrameTime();
-            }
-        }
-        void chk_outof_axs(float frametime){
-            // checks if the square is not on any axis(x or y).
-            // the main square can't collide with the moving square if this is the case.
-            // one can stay in this region for <out_time> seconds.
+class obj {
+    // main square at the centre.
+   public:
+    float forcex = 0, forcey = 0;
+    float velx = 0, vely = 0;
+    float speed = 700;
+    float width = 50, height = 50;
+    float posx = win_width / 2 - width / 2;
+    float posy = win_height / 2 - height / 2;
 
-            float diffX = fabs(posx + width/2.0f - win_width/2.0f);
-            float diffY = fabs(posy + height/2.0f - win_height/2.0f);
-            if(diffX >= 5.0f && diffY >= 5.0f){
-                out_of_axes = true; 
-                if(timer <= out_time){
-                    timer += frametime;
-                    // the time since the rectangle is
-                    // out of the x and y axes.
-                    elapsed = timer / out_time;
-                    //fraction of time spent outside both axes out of
-                    // which can be spent before the game is over.
-                }else{
-                    game_over = true;    
-                }
-            }else{
-                out_of_axes = false;
-            }
+    float timer = 0;
+    float out_time = 2;
+    float elapsed = timer / out_time;
+
+    void draw() { DrawRectangle(posx, posy, width, height, RED); }
+    void move() {
+        // moves the square on keyboard input.
+
+        forcex = -600 * (posx + width / 2 - win_width / 2);
+        forcey = -600 * (posy + height / 2 - win_height / 2);
+        velx = forcex * GetFrameTime();
+        vely = forcey * GetFrameTime();
+        posx += velx * GetFrameTime();
+        posy += vely * GetFrameTime();
+
+        if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_K)) {
+            posy -= speed * GetFrameTime();
         }
+        if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_J)) {
+            posy += speed * GetFrameTime();
+        }
+        if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_L)) {
+            posx += speed * GetFrameTime();
+        }
+        if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_H)) {
+            posx -= speed * GetFrameTime();
+        }
+    }
+    void chk_outof_axs(float frametime) {
+        // checks if the square is not on any axis(x or y).
+        // the main square can't collide with the moving square if this is the
+        // case. one can stay in this region for <out_time> seconds.
+
+        float diffX = fabs(posx + width / 2.0f - win_width / 2.0f);
+        float diffY = fabs(posy + height / 2.0f - win_height / 2.0f);
+        if (diffX >= 5.0f && diffY >= 5.0f) {
+            out_of_axes = true;
+            if (timer <= out_time) {
+                timer += frametime;
+                // the time since the rectangle is
+                // out of the x and y axes.
+                elapsed = timer / out_time;
+                // fraction of time spent outside both axes out of
+                //  which can be spent before the game is over.
+            } else {
+                game_over = true;
+            }
+        } else {
+            out_of_axes = false;
+        }
+    }
 };
 
-class obsy{
+class obsy {
     // Squares moving in the y-axis.
-    public:
+   public:
     float width = 30, height = 30;
     float ps_x, ps_y = win_height + GetRandomValue(0, 100);
-    static float speed;    
+    static float speed;
     Color colour = BLUE;
 
-    void draw(){
-        ps_x = win_width/2 - width/2,
+    void draw() {
+        ps_x = win_width / 2 - width / 2,
         DrawRectangle(ps_x, ps_y, width, height, colour);
     }
-    void move(){
-        ps_y -= speed*GetFrameTime();
-    }
+    void move() { ps_y -= speed * GetFrameTime(); }
 };
 float obsy::speed = 100;
 
-class obsx{
+class obsx {
     // Squares moving in x-axis.
-    public:
+   public:
     float width = 30, height = 30;
     float ps_x = win_width + GetRandomValue(1000, 5000), ps_y;
-    static float speed;    
+    static float speed;
     Color colour = GREEN;
 
-    void draw(){
-        ps_y = win_height/2 - height/2;
+    void draw() {
+        ps_y = win_height / 2 - height / 2;
         DrawRectangle(ps_x, ps_y, width, height, colour);
     }
-    void move(){
-        ps_x -= speed*GetFrameTime();
-    }
+    void move() { ps_x -= speed * GetFrameTime(); }
 };
 float obsx::speed = 100;
 
-void checkcollision(obj& o, obsx** ox, obsy** oy, int n){
-    for(int i=0; i<n; ++i){      
+void checkcollision(obj& o, obsx** ox, obsy** oy, int n) {
+    for (int i = 0; i < n; ++i) {
         Rectangle a = {o.posx, o.posy, o.width, o.height};
         Rectangle x = {ox[i]->ps_x, ox[i]->ps_y, ox[i]->width, ox[i]->height};
         Rectangle y = {oy[i]->ps_x, oy[i]->ps_y, oy[i]->width, oy[i]->height};
 
-        if(CheckCollisionRecs(a, x) || CheckCollisionRecs(a, y)){
+        if (CheckCollisionRecs(a, x) || CheckCollisionRecs(a, y)) {
             game_over = true;
         }
     }
@@ -136,11 +132,11 @@ void checkcollision(obj& o, obsx** ox, obsy** oy, int n){
 int score = 0;
 int last_score = 0;
 float score_accu = 0;
-void showscore(){
+void showscore() {
     // Shows the score and increases the difficulty with the score.
     score_accu += GetFrameTime();
     score = (int)score_accu;
-    if(score > last_score){
+    if (score > last_score) {
         obsx::speed += 2.0f;
         obsy::speed += 2.0f;
         last_score = score;
@@ -148,53 +144,55 @@ void showscore(){
     DrawText(TextFormat("Score: %d", score), 20, 20, 30, ORANGE);
 }
 
-int main(){
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);  //Makes the window resizable. 
+int main() {
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);  // Makes the window resizable.
     InitWindow(win_width, win_height, "Square++");
     SetTargetFPS(60);
 
     int num = 50;
     int gap = 500;
-    obsx* ox[num];  // Arrays of pointers to be pointed to square objects in 
+    obsx* ox[num];  // Arrays of pointers to be pointed to square objects in
     obsy* oy[num];  // x and y axes on the heap below.
-    
-    for(int i=0; i<num; ++i){
+
+    for (int i = 0; i < num; ++i) {
         ox[i] = new obsx;
         oy[i] = new obsy;
     }
 
     bool paused = false;
-        
-    obj rect; // Main square at the centre.
-    while(!WindowShouldClose()){
+
+    obj rect;  // Main square at the centre.
+    while (!WindowShouldClose()) {
         BeginDrawing();
-                
-        win_width = GetScreenWidth();   //Takes care of position adjustments of
-        win_height = GetScreenHeight(); //objects in the window when it gets resized.
+
+        win_width = GetScreenWidth();  // Takes care of position adjustments of
+        win_height =
+            GetScreenHeight();  // objects in the window when it gets resized.
 
         ClearBackground(BLACK);
 
-        if(GetTime() < 5){
-            DrawText("VIM Keys Can Be Used To Move", 10, win_height-20, 15, LIGHTGRAY);
-            DrawText("Press SpaceBar to pause", win_width-200, win_height-20, 15, LIGHTGRAY);
+        if (GetTime() < 5) {
+            DrawText("VIM Keys Can Be Used To Move", 10, win_height - 20, 15,
+                     LIGHTGRAY);
+            DrawText("Press SpaceBar to pause", win_width - 200,
+                     win_height - 20, 15, LIGHTGRAY);
         }
-        for(int i=0; i<num; ++i){
+        for (int i = 0; i < num; ++i) {
             // Checks if the squares in the x and y axes overlap or if they are
             // too close to each other.
             // Separates them if they are.
-            
-            for(int j=i+1; j<num; ++j){
-                if(j == i)
-                    continue;
-                
-                if(fabs(ox[i]->ps_x - ox[j]->ps_x) < gap){
-                    if(ox[i]->ps_x > ox[j]->ps_x)
+
+            for (int j = i + 1; j < num; ++j) {
+                if (j == i) continue;
+
+                if (fabs(ox[i]->ps_x - ox[j]->ps_x) < gap) {
+                    if (ox[i]->ps_x > ox[j]->ps_x)
                         ox[i]->ps_x += GetRandomValue(gap, 5000);
                     else
                         ox[j]->ps_x += GetRandomValue(gap, 5000);
                 }
-                if(fabs(oy[i]->ps_y - oy[j]->ps_y) < gap){
-                    if(oy[i]->ps_y > oy[j]->ps_y)
+                if (fabs(oy[i]->ps_y - oy[j]->ps_y) < gap) {
+                    if (oy[i]->ps_y > oy[j]->ps_y)
                         oy[i]->ps_y += GetRandomValue(gap, 5000);
                     else
                         oy[j]->ps_y += GetRandomValue(gap, 5000);
@@ -202,17 +200,17 @@ int main(){
             }
         }
 
-        for(int i=0; i<num; ++i){
+        for (int i = 0; i < num; ++i) {
             ox[i]->draw();
             oy[i]->draw();
             ox[i]->move();
             oy[i]->move();
 
-            if(ox[i]->ps_x+ox[i]->width < 0){
+            if (ox[i]->ps_x + ox[i]->width < 0) {
                 delete ox[i];
                 ox[i] = new obsx;
             }
-            if(oy[i]->ps_y+oy[i]->height < 0){
+            if (oy[i]->ps_y + oy[i]->height < 0) {
                 delete oy[i];
                 oy[i] = new obsy;
             }
@@ -220,28 +218,31 @@ int main(){
         rect.draw();
         rect.move();
 
-        if(IsKeyDown(KEY_SPACE)){
+        if (IsKeyDown(KEY_SPACE)) {
             paused = !paused;
             std::this_thread::sleep_for(std::chrono::milliseconds(150));
         };
-        if(paused){
-            DrawText("PAUSED", win_width/2-200, win_height/2-50, 100, PURPLE);
+        if (paused) {
+            DrawText("PAUSED", win_width / 2 - 200, win_height / 2 - 50, 100,
+                     PURPLE);
             EndDrawing();
-            continue; 
+            continue;
         }
 
-        showscore();         
-        std::thread ckcoll(checkcollision, std::ref(rect), (obsx**)ox, (obsy**)oy, num);
+        showscore();
+        std::thread ckcoll(checkcollision, std::ref(rect), (obsx**)ox,
+                           (obsy**)oy, num);
         std::thread out_of_bound(&obj::chk_outof_axs, &rect, GetFrameTime());
         // checking the collision and if the square is out of axes
         // happens on different threads for smoothness.
-        if(out_of_axes){
-            DrawRectangle(0, win_height-20, (int)(rect.elapsed*win_width), 20, RED);
-        }else{
-            rect.timer = 0;            
+        if (out_of_axes) {
+            DrawRectangle(0, win_height - 20, (int)(rect.elapsed * win_width),
+                          20, RED);
+        } else {
+            rect.timer = 0;
         }
 
-        if(game_over){
+        if (game_over) {
             gameover();
             ckcoll.join();
             out_of_bound.join();
@@ -249,11 +250,11 @@ int main(){
         }
 
         ckcoll.join();
-        out_of_bound.join();    
+        out_of_bound.join();
         EndDrawing();
     }
 
-    for(int i=0; i<num; ++i){
+    for (int i = 0; i < num; ++i) {
         delete ox[i];
         delete oy[i];
     }
