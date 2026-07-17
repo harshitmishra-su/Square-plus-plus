@@ -1,13 +1,13 @@
 # Square++  
 
-A simple game built using raylib in c++.
+A simple game built using raylib in C++.
 
 ![Here is a demo:](https://github.com/user-attachments/assets/341cdf35-a34c-4a29-af45-6e765d969f6b)
 
-To play download the release for the appropriate os.  
+To play download the release for the appropriate os. 
 
 # To build the project
-*YOU NEED TO HAVE XMAKE AND A C++ COMPILER INSTALLED*
+*YOU NEED TO HAVE XMAKE AND A C++ COMPILER INSTALLED.*
 
 ![Here](https://xmake.io/guide/quick-start.html) are the instructions to install xmake on your system.
 
