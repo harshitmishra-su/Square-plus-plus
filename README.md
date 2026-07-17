@@ -2,7 +2,7 @@
 
 A simple game built using raylib in C++.
 
-![Here is a demo:](https://github.com/user-attachments/assets/341cdf35-a34c-4a29-af45-6e765d969f6b)
+![Here is a demo:](./assets/demo.gif)
 
 To play download the release for the appropriate os. 
 
